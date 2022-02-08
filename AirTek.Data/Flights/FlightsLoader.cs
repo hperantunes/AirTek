@@ -12,7 +12,7 @@ namespace AirTek.Data.Flights
 
         public IEnumerable<FlightEntry> Load()
         {
-            string jsonString = File.ReadAllText(FilePath);
+            var jsonString = File.ReadAllText(FilePath);
             var data = JsonSerializer.Deserialize<IDictionary<string, FlightDetails>>(jsonString, SerializerOptions);
 
             var entries = data.AsEnumerable().Select(entry => new FlightEntry

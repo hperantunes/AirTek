@@ -11,7 +11,7 @@ namespace AirTek.Data.Orders
 
         public IEnumerable<OrderEntry> Load()
         {
-            string jsonString = File.ReadAllText(FilePath);
+            var jsonString = File.ReadAllText(FilePath);
             var data = JsonSerializer.Deserialize<IDictionary<string, OrderDetails>>(jsonString, SerializerOptions);
 
             var entries = data.AsEnumerable().Select(entry => new OrderEntry
