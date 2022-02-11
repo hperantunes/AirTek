@@ -6,8 +6,6 @@ namespace AirTek.Domain
     {
         IList<Order> Orders { get; }
         IList<Flight> Flights { get; }
-        void AddOrder(string name, string destination);
-        void AddFlight(string number, int day, string origin, string destination, int? maxCapacity = null);
         void Schedule();
     }
 }

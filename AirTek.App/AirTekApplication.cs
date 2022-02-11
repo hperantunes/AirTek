@@ -33,7 +33,13 @@ namespace AirTek.App
             foreach (var flight in flights)
             {
                 var details = flight.Details;
-                scheduler.AddFlight(flight.Number, details.Day, details.Origin, details.Destination);
+                scheduler.Flights.Add(new Flight 
+                {
+                    Number = flight.Number,
+                    Day = details.Day,
+                    OriginCode = details.Origin,
+                    DestinationCode = details.Destination
+                });
             }
         }
 
@@ -43,8 +49,11 @@ namespace AirTek.App
 
             foreach (var order in orders)
             {
-                var details = order.Details;
-                scheduler.AddOrder(order.Name, details.Destination);
+                scheduler.Orders.Add(new Order
+                {
+                    Name = order.Name,
+                    DestinationCode = order.Details.Destination
+                });
             }
         }
 
