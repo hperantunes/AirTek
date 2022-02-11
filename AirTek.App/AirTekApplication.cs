@@ -1,19 +1,26 @@
-﻿using AirTek.Data.Flights;
-using AirTek.Data.Orders;
+﻿using AirTek.Data;
+using AirTek.Data.Model;
 using AirTek.Domain;
 using System;
+using System.Configuration;
 using System.Linq;
 
 namespace AirTek.App
 {
     internal class AirTekApplication : IStartableApplication
     {
-        private readonly ISchedulerService scheduler;
-        private readonly OrdersLoader ordersLoader;
-        private readonly FlightsLoader flightsLoader;
+        private readonly string ordersFilePath;
+        private readonly string flightsFilePath;
 
-        public AirTekApplication(ISchedulerService scheduler, OrdersLoader ordersLoader, FlightsLoader flightsLoader)
+        private readonly ISchedulerService scheduler;
+        private readonly IDataLoader<OrderEntry> ordersLoader;
+        private readonly IDataLoader<FlightEntry> flightsLoader;
+
+        public AirTekApplication(ISchedulerService scheduler, IDataLoader<OrderEntry> ordersLoader, IDataLoader<FlightEntry> flightsLoader)
         {
+            ordersFilePath = ConfigurationManager.AppSettings.Get("OrdersFilePath");
+            flightsFilePath = ConfigurationManager.AppSettings.Get("FlightsFilePath");
+
             this.scheduler = scheduler;
             this.ordersLoader = ordersLoader;
             this.flightsLoader = flightsLoader;
@@ -21,7 +28,7 @@ namespace AirTek.App
 
         private void LoadFlights()
         {
-            var flights = flightsLoader.Load();
+            var flights = flightsLoader.Load(flightsFilePath);
 
             foreach (var flight in flights)
             {
@@ -32,7 +39,7 @@ namespace AirTek.App
 
         private void LoadOrders()
         {
-            var orders = ordersLoader.Load();
+            var orders = ordersLoader.Load(ordersFilePath);
 
             foreach (var order in orders)
             {
@@ -48,8 +55,7 @@ namespace AirTek.App
 
         private static string RenderFlightDisplayText(Flight flight)
         {
-            var message = $"Flight: {flight.Number}, departure: {flight.OriginCode}, arrival: {flight.DestinationCode}, day: {flight.Day}";
-            return message;
+            return $"Flight: {flight.Number}, departure: {flight.OriginCode}, arrival: {flight.DestinationCode}, day: {flight.Day}";
         }
 
         private static string RenderOrderDisplayText(Order order)
@@ -59,8 +65,7 @@ namespace AirTek.App
                 return $"Order: {order.Name}, flightNumber: not scheduled";
             }
 
-            var message = $"Order: {order.Name}, flightNumber: {order.FlightNumber}, departure: {order.OriginCode}, arrival: {order.DestinationCode}, day: {order.Day}";
-            return message;
+            return $"Order: {order.Name}, flightNumber: {order.FlightNumber}, departure: {order.OriginCode}, arrival: {order.DestinationCode}, day: {order.Day}";
         }
 
         private void RenderFlights()

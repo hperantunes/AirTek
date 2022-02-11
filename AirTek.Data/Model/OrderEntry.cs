@@ -1,4 +1,4 @@
-﻿namespace AirTek.Data.Orders
+﻿namespace AirTek.Data.Model
 {
     public class OrderEntry
     {

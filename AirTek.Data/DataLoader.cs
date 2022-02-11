@@ -1,19 +1,23 @@
-﻿using System.Text.Json;
+﻿using AirTek.Data.Deserializer;
+using System.Collections.Generic;
+using System.IO;
 
 namespace AirTek.Data
 {
-    public abstract class DataLoader
+    public class DataLoader<T> : IDataLoader<T>
     {
-        public DataLoader(string filePath)
+        private readonly IDeserializer<T> deserializer;
+
+        public DataLoader(IDeserializer<T> deserializer)
         {
-            FilePath = filePath;
-            SerializerOptions = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
+            this.deserializer = deserializer;
         }
 
-        public string FilePath { get; }
-        public JsonSerializerOptions SerializerOptions { get; }
+        public IEnumerable<T> Load(string filePath)
+        {
+            var json = File.ReadAllText(filePath);
+            var data = deserializer.Deserialize(json);
+            return data;
+        }
     }
 }
