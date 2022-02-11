@@ -22,8 +22,11 @@ namespace AirTek.Data.Deserializer
 
         public IEnumerable<OrderEntry> Deserialize(string json)
         {
-            var data = JsonSerializer.Deserialize<IDictionary<string, OrderDetails>>(json, serializerOptions);
-            var entries = data.AsEnumerable().Select(mapper.Map);
+            var data = JsonSerializer
+                .Deserialize<IDictionary<string, OrderDetails>>(json, serializerOptions)
+                .AsEnumerable();
+
+            var entries = data.Select(mapper.Map);
             return entries;
         }
     }
