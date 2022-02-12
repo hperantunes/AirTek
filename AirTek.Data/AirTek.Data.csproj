@@ -9,7 +9,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AirTek.Domain\AirTek.Domain.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Update="Data\coding-assignment-flights.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="Data\coding-assignment-orders-part-two.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="Data\coding-assignment-orders.json">

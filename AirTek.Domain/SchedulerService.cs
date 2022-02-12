@@ -11,7 +11,9 @@ namespace AirTek.Domain
         public void Schedule()
         {
             var availableFlights = Flights.Where(flight => flight.HasCapacity);
-            var unscheduledOrders = Orders.Where(order => string.IsNullOrEmpty(order.FlightNumber));
+            var unscheduledOrders = Orders
+                .Where(order => string.IsNullOrEmpty(order.FlightNumber))
+                .OrderBy(order => order.OrderPriority);
 
             foreach (var flight in availableFlights)
             {

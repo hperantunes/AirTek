@@ -33,7 +33,7 @@ namespace AirTek.App
             foreach (var flight in flights)
             {
                 var details = flight.Details;
-                scheduler.Flights.Add(new Flight 
+                scheduler.Flights.Add(new Flight
                 {
                     Number = flight.Number,
                     Day = details.Day,
@@ -49,10 +49,17 @@ namespace AirTek.App
 
             foreach (var order in orders)
             {
+                var priority = order.Details.Service == "same-day"
+                    ? OrderPriority.SameDay
+                    : order.Details.Service == "next-day"
+                        ? OrderPriority.NextDay
+                        : OrderPriority.Regular;
+
                 scheduler.Orders.Add(new Order
                 {
                     Name = order.Name,
-                    DestinationCode = order.Details.Destination
+                    DestinationCode = order.Details.Destination,
+                    OrderPriority = priority
                 });
             }
         }
@@ -74,7 +81,7 @@ namespace AirTek.App
                 return $"Order: {order.Name}, flightNumber: not scheduled";
             }
 
-            return $"Order: {order.Name}, flightNumber: {order.FlightNumber}, departure: {order.OriginCode}, arrival: {order.DestinationCode}, day: {order.Day}";
+            return $"Order: {order.Name}, flightNumber: {order.FlightNumber}, departure: {order.OriginCode}, arrival: {order.DestinationCode}, day: {order.Day}, priority: {order.OrderPriority}";
         }
 
         private void RenderFlights()
