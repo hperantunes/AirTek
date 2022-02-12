@@ -1,4 +1,4 @@
-﻿namespace AirTek.Data.Flights
+﻿namespace AirTek.Data.Model
 {
     public class FlightEntry
     {

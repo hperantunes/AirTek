@@ -1,8 +1,10 @@
-﻿using AirTek.Data.Flights;
-using AirTek.Data.Orders;
+﻿using AirTek.Data;
+using AirTek.Data.Deserializer;
+using AirTek.Data.Mapper;
+using AirTek.Data.Model;
 using AirTek.Domain;
 using Microsoft.Extensions.DependencyInjection;
-using System.Configuration;
+using System.Collections.Generic;
 
 namespace AirTek.App
 {
@@ -23,13 +25,14 @@ namespace AirTek.App
 
         private static void ConfigureServices(IServiceCollection services)
         {
-            var ordersFilePath = ConfigurationManager.AppSettings.Get("OrdersFilePath");
-            var flightsFilePath = ConfigurationManager.AppSettings.Get("FlightsFilePath");
-
             services
                 .AddTransient<ISchedulerService, SchedulerService>()
-                .AddTransient(s => new OrdersLoader(ordersFilePath))
-                .AddTransient(s => new FlightsLoader(flightsFilePath));
+                .AddTransient<IEntryMapper<FlightEntry, KeyValuePair<string, FlightDetails>>, FlightEntryMapper>()
+                .AddTransient<IEntryMapper<OrderEntry, KeyValuePair<string, OrderDetails>>, OrderEntryMapper>()
+                .AddTransient<IDeserializer<OrderEntry>, OrderDeserializer>()
+                .AddTransient<IDeserializer<FlightEntry>, FlightDeserializer>()
+                .AddTransient<IDataLoader<OrderEntry>, DataLoader<OrderEntry>>()
+                .AddTransient<IDataLoader<FlightEntry>, DataLoader<FlightEntry>>();
         }
     }
 }

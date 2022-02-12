@@ -18,8 +18,11 @@ namespace AirTek.Domain.Tests
         public void Schedule_WithOneOrder_WithNoFlights_OrderIsNotScheduled()
         {
             var name = "Some order name";
-            var destination = "Some destination";
-            scheduler.AddOrder(name, destination);
+            scheduler.Orders.Add(new Order 
+            { 
+                Name = name, 
+                DestinationCode = "Some destination"
+            });
 
             scheduler.Schedule();
 
@@ -30,11 +33,14 @@ namespace AirTek.Domain.Tests
         [TestMethod]
         public void Schedule_WithNoOrders_WithOneFlight_FlightHasNoScheduledOrders()
         {
-            var number = "1";
-            var day = 1;
-            var origin = "Some origin";
-            var destination = "A different destination";
-            scheduler.AddFlight(number, day, origin, destination);
+            var number = "Some flight number";
+            scheduler.Flights.Add(new Flight
+            {
+                Number = number,
+                Day = 1,
+                OriginCode = "Some origin",
+                DestinationCode = "Some destination"
+            });
 
             scheduler.Schedule();
 
@@ -46,14 +52,18 @@ namespace AirTek.Domain.Tests
         public void Schedule_WithOneOrder_WithNoFlightsMatchingDestination_OrderIsNotScheduled()
         {
             var orderName = "Some order name";
-            var orderDestination = "Some destination";
-            scheduler.AddOrder(orderName, orderDestination);
-
-            var flightNumber = "1";
-            var day = 1;
-            var flightOrigin = "Some origin";
-            var flightDestination = "A different destination";
-            scheduler.AddFlight(flightNumber, day, flightOrigin, flightDestination);
+            scheduler.Orders.Add(new Order
+            {
+                Name = orderName,
+                DestinationCode = "Some destination"
+            });
+            scheduler.Flights.Add(new Flight
+            {
+                Number = "Some flight number",
+                Day = 1,
+                OriginCode = "Some origin",
+                DestinationCode = "A different destination"
+            });
 
             scheduler.Schedule();
 
@@ -64,15 +74,19 @@ namespace AirTek.Domain.Tests
         [TestMethod]
         public void Schedule_WithOneOrder_WithNoFlightsMatchingDestination_FlightHasNoOrdersScheduled()
         {
-            var orderName = "Some order name";
-            var orderDestination = "Some destination";
-            scheduler.AddOrder(orderName, orderDestination);
-
-            var flightNumber = "1";
-            var day = 1;
-            var flightOrigin = "Some origin";
-            var flightDestination = "A different destination";
-            scheduler.AddFlight(flightNumber, day, flightOrigin, flightDestination);
+            var flightNumber = "Some flight number";
+            scheduler.Orders.Add(new Order
+            {
+                Name = "Some order name",
+                DestinationCode = "Some destination"
+            });
+            scheduler.Flights.Add(new Flight
+            {
+                Number = flightNumber,
+                Day = 1,
+                OriginCode = "Some origin",
+                DestinationCode = "A different destination"
+            });
 
             scheduler.Schedule();
 
@@ -84,13 +98,20 @@ namespace AirTek.Domain.Tests
         public void Schedule_WithOneOrder_WithOneFlightMatchingDestination_OrderIsScheduledWithFlightNumber()
         {
             var orderName = "Some order name";
+            var flightNumber = "Some flight number";
             var destination = "Some destination";
-            scheduler.AddOrder(orderName, destination);
-
-            var flightNumber = "1";
-            var day = 1;
-            var flightOrigin = "Some origin";
-            scheduler.AddFlight(flightNumber, day, flightOrigin, destination);
+            scheduler.Orders.Add(new Order
+            {
+                Name = orderName,
+                DestinationCode = destination
+            });
+            scheduler.Flights.Add(new Flight
+            {
+                Number = flightNumber,
+                Day = 1,
+                OriginCode = "Some origin",
+                DestinationCode = destination
+            });
 
             scheduler.Schedule();
 
@@ -103,12 +124,19 @@ namespace AirTek.Domain.Tests
         {
             var orderName = "Some order name";
             var destination = "Some destination";
-            scheduler.AddOrder(orderName, destination);
-
-            var flightNumber = "1";
-            var day = 1;
             var flightOrigin = "Some origin";
-            scheduler.AddFlight(flightNumber, day, flightOrigin, destination);
+            scheduler.Orders.Add(new Order
+            {
+                Name = orderName,
+                DestinationCode = destination
+            });
+            scheduler.Flights.Add(new Flight
+            {
+                Number = "Some flight number",
+                Day = 1,
+                OriginCode = flightOrigin,
+                DestinationCode = destination
+            });
 
             scheduler.Schedule();
 
@@ -121,12 +149,19 @@ namespace AirTek.Domain.Tests
         {
             var orderName = "Some order name";
             var destination = "Some destination";
-            scheduler.AddOrder(orderName, destination);
-
-            var flightNumber = "1";
             var day = 1;
-            var flightOrigin = "Some origin";
-            scheduler.AddFlight(flightNumber, day, flightOrigin, destination);
+            scheduler.Orders.Add(new Order
+            {
+                Name = orderName,
+                DestinationCode = destination
+            });
+            scheduler.Flights.Add(new Flight
+            {
+                Number = "Some flight number",
+                Day = day,
+                OriginCode = "Some origin",
+                DestinationCode = destination
+            });
 
             scheduler.Schedule();
 
@@ -139,13 +174,19 @@ namespace AirTek.Domain.Tests
         {
             var orderName = "Some order name";
             var destination = "Some destination";
-            scheduler.AddOrder(orderName, destination);
-
-            var flightNumber = "1";
-            var day = 1;
-            var flightOrigin = "Some origin";
-            var maxCapacity = 0;
-            scheduler.AddFlight(flightNumber, day, flightOrigin, destination, maxCapacity);
+            scheduler.Orders.Add(new Order
+            {
+                Name = orderName,
+                DestinationCode = destination
+            });
+            scheduler.Flights.Add(new Flight
+            {
+                Number = "Some flight number",
+                Day = 1,
+                OriginCode = "Some origin",
+                DestinationCode = destination,
+                MaxCapacity = 0
+            });
 
             scheduler.Schedule();
 
